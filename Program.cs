@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 using Dapper;
+using HelloWorld.Data;
 using HelloWorld.Models;
 using Microsoft.Data.SqlClient;
 
@@ -10,14 +12,13 @@ namespace HelloWorld
     {
         static void Main(string[] args)
         {
-            string ConnectionString = @"Server=localhost\MSSQLSERVER02;Database=DotNetCourseDatabase;TrustServerCertificate=true;Trusted_Connection=true;";
+            DataContextDapper dapper = new DataContextDapper();
 
-            IDbConnection dbConnection = new SqlConnection(ConnectionString);
+
 
             string sqlCommand = "SELECT GETDATE()";
 
-            DateTime rightNow = dbConnection.QuerySingle<DateTime>(sqlCommand);
-            Console.WriteLine(rightNow);
+            DateTime rightNow = dapper.LoadDataSingle<DateTime>(sqlCommand);
 
             Computer myComputer = new Computer()
             {
@@ -39,18 +40,34 @@ namespace HelloWorld
             ) VALUES ('" + myComputer.Motherboard 
                 + "','" + myComputer.HasWifi
                 + "','" + myComputer.HasLTE
-                + "','" + myComputer.ReleaseDate
-                + "','" + myComputer.Price
+                + "','" + myComputer.ReleaseDate.ToString("yyyy-MM-ddTHH:mm:ss")
+                + "','" + myComputer.Price.ToString(CultureInfo.InvariantCulture)
                 + "','" + myComputer.VideoCard
             + "')";
 
-            Console.WriteLine(sql);
-            int result = dbConnection.Execute(sql);
-            Console.WriteLine(result);
+            bool result = dapper.ExecuteSql(sql);
 
+            string sqlSelect = @"SELECT 
+                Computer.Motherboard,
+                Computer.HasWifi,
+                Computer.HasLTE,
+                Computer.ReleaseDate,
+                Computer.Price,
+                Computer.VideoCard FROM TutorialAppSchema.Computer"; 
 
-            Console.WriteLine(myComputer.Motherboard);
+            IEnumerable<Computer> computers = dapper.LoadData<Computer>(sqlSelect);
 
+            foreach(Computer singleComputer in computers)
+            {
+                Console.WriteLine(
+                    "'" + myComputer.Motherboard 
+                + "','" + myComputer.HasWifi
+                + "','" + myComputer.HasLTE
+                + "','" + myComputer.ReleaseDate.ToString("yyyy-MM-ddTHH:mm:ss")
+                + "','" + myComputer.Price.ToString(CultureInfo.InvariantCulture)
+                + "','" + myComputer.VideoCard
+                    + "'" );
+            }
         }
     }
 }

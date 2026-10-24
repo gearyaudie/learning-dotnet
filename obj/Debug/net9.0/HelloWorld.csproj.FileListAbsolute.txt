@@ -67,3 +67,4 @@ C:\PP\dotnet-course-code\HelloWorld\bin\Debug\net9.0\runtimes\win\lib\net9.0\Sys
 C:\PP\dotnet-course-code\HelloWorld\bin\Debug\net9.0\runtimes\win\lib\net9.0\System.Security.Cryptography.Pkcs.dll
 C:\PP\dotnet-course-code\HelloWorld\obj\Debug\net9.0\HelloWorld.csproj.AssemblyReference.cache
 C:\PP\dotnet-course-code\HelloWorld\obj\Debug\net9.0\HelloWorld.csproj.Up2Date
+C:\PP\dotnet-course-code\HelloWorld\obj\Debug\net9.0\HelloWorld.sourcelink.json
